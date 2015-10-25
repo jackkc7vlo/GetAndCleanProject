@@ -65,7 +65,7 @@ labels <- rbind("subject","activity", labels)
 labels <- unlist(labels)
 #now add the column names
 data <- setNames(data, labels)
-#rm(labels)
+
 
 #OK  Now we have some serious data.  
 #****************************************************************************
@@ -78,7 +78,7 @@ data <- setNames(data, labels)
 cols = grepl("subject|activity|std\\(\\)|mean\\(\\)", labels, fixed = true)
 # now just get those columns
 newData <- data[,cols] 
-
+rm(labels)
 #****************************************************************************
 #   3. Uses descriptive activity names to name the activities in the data set
 #****************************************************************************
@@ -100,5 +100,7 @@ sums <- aggregate(newData[,3:68], by=list(newData$subject, newData$activity), FU
 names(sums)[colnames(sums)=="Group.1"] <- "Subject"
 names(sums)[colnames(sums)=="Group.2"] <- "Activity"
 
+rm(newData)
+rm(cols)
 #finally, lets write this out
 write.table(sums, "./tidy.txt", row.name = FALSE)
