@@ -102,4 +102,4 @@ names(sums)[colnames(sums)=="Group.1"] <- "Subject"
 names(sums)[colnames(sums)=="Group.2"] <- "Activity"
 
 #finally, lets write this out
-write.table(sums, "./data/tidy.txt")
+write.table(sums, "./data/tidy.txt", row.name = FALSE)
