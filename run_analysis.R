@@ -12,7 +12,7 @@
 #   5. From the data set in step 4, creates a second, independent tidy data set with 
 #      the average of each variable for each activity and each subject.
 #
-# Note:  For simplicity all files used are in a sub folder called data.
+# Note:  For simplicity all files used are included.
 
 require(data.table) #needed for fread
 require(plyr) #needed for mapvalues
@@ -22,22 +22,22 @@ require(plyr) #needed for mapvalues
 #******************************************************************
 # First combine the three files in the test data into one dataset
 rm(list=ls())
-subjects_test <- read.table("./data/subject_test.txt", sep=" ")
+subjects_test <- read.table("./subject_test.txt", sep=" ")
 
 #since X_test is large, apply a trick to make it go faster.
-tab5rows <- read.table("./data/X_test.txt", nrows = 5)
+tab5rows <- read.table("./X_test.txt", nrows = 5)
 classes <- sapply(tab5rows, class)
-X_test <- read.table("./data/X_test.txt", colClasses = classes)
+X_test <- read.table("./X_test.txt", colClasses = classes)
 
-y_test <- read.table("./data/y_test.txt")
+y_test <- read.table("./y_test.txt")
 test <- cbind(subjects_test, y_test, X_test )
 rm (subjects_test, X_test, y_test) # remove old variable to save memory
 
-subjects_train <- read.table("./data/subject_train.txt", sep=" ")
+subjects_train <- read.table("./subject_train.txt", sep=" ")
 
 #classes should be the same in the X_train so use them here too.
-X_train <- read.table("./data/X_train.txt", colClasses = classes)
-y_train <- read.table("./data/y_train.txt")
+X_train <- read.table("./X_train.txt", colClasses = classes)
+y_train <- read.table("./y_train.txt")
 train <- cbind(subjects_train, y_train, X_train)
 rm (subjects_train, y_train, X_train, tab5rows, classes) # remove old variable to save memory
 
@@ -58,7 +58,7 @@ rm(test, train) # remove old variable to save memory
 # NOTE: I'm sure there is a better way to do the following.  
 #   ** Reviewers please let me know **
 #read only the second column from the features.txt file
-labels <- read.table("./data/features.txt", colClasses = c("NULL", "character"))
+labels <- read.table("./features.txt", colClasses = c("NULL", "character"))
 #add the subjects and activities columns
 labels <- rbind("subject","activity", labels)
 #convert to vector
@@ -82,7 +82,6 @@ newData <- data[,cols]
 #****************************************************************************
 #   3. Uses descriptive activity names to name the activities in the data set
 #****************************************************************************
-#activities <- read.table("./data/y_test.txt")
 
 newData$activity <- mapvalues(newData$activity, 
                     from = c(1,2,3,4,5,6),
@@ -102,4 +101,4 @@ names(sums)[colnames(sums)=="Group.1"] <- "Subject"
 names(sums)[colnames(sums)=="Group.2"] <- "Activity"
 
 #finally, lets write this out
-write.table(sums, "./data/tidy.txt", row.name = FALSE)
+write.table(sums, "./tidy.txt", row.name = FALSE)
